@@ -17,7 +17,7 @@ export default function Header() {
       const cart = getLocal("cart", []);
       setCartCount(cart.length);
       setUser(getLocal("currentUser"));
-      setIsAdmin(localStorage.getItem("isAdmin") === "true");
+      setIsAdmin(typeof window !== "undefined" && localStorage.getItem("isAdmin") === "true");
     };
     update();
     window.addEventListener("storage", update);
@@ -37,46 +37,51 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="w-9 h-9 bg-[#0D6EFD] rounded-lg flex items-center justify-center shadow-sm">
             <FlaskConical className="text-white" size={20} />
           </div>
           <div>
-            <span className="font-bold text-navy text-lg">HomeLab GH</span>
-            <p className="text-xs text-gray-500 -mt-1">lab service</p>
+            <span className="font-bold text-[#0A1931] text-lg leading-none">HomeLab GH</span>
+            <p className="text-[10px] text-gray-400 font-medium tracking-wide">HOME • SAMPLE • RESULT</p>
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
-          <Link href="/" className="hover:text-primary">Home</Link>
-          <Link href="/tests" className="hover:text-primary">Tests</Link>
-          <Link href="/book-test" className="hover:text-primary">Book Appointment</Link>
-          {user && <Link href="/dashboard" className="hover:text-primary">Dashboard</Link>}
-          {user && <Link href="/my-results" className="hover:text-primary">My Results</Link>}
-          {isAdmin && <Link href="/admin" className="hover:text-primary">Admin</Link>}
+        <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600">
+          <Link href="/" className="hover:text-[#0D6EFD] transition">Home</Link>
+          <Link href="/tests" className="hover:text-[#0D6EFD] transition">Tests</Link>
+          <Link href="/book-test" className="hover:text-[#0D6EFD] transition">Book Appointment</Link>
+          {user && <Link href="/dashboard" className="hover:text-[#0D6EFD] transition">Dashboard</Link>}
+          {user && <Link href="/my-results" className="hover:text-[#0D6EFD] transition">My Results</Link>}
+          {isAdmin && <Link href="/admin" className="hover:text-[#0D6EFD] transition">Admin</Link>}
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/tests" className="relative p-2 rounded-full hover:bg-gray-100">
-            <ShoppingCart size={20} />
+          <Link href="/tests" className="relative p-2 rounded-full hover:bg-gray-50 transition">
+            <ShoppingCart size={20} className="text-gray-600" />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 bg-[#0D6EFD] text-white text-[10px] font-bold w-4.5 h-4.5 min-w-[18px] rounded-full flex items-center justify-center">
                 {cartCount}
               </span>
             )}
           </Link>
 
           {user ? (
-            <button onClick={logout} className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-primary">
-              <User size={18} />
+            <button
+              onClick={logout}
+              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-[#0D6EFD] transition"
+            >
+              <div className="w-8 h-8 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#0D6EFD] font-bold text-sm">
+                {user.fullName?.[0] || "U"}
+              </div>
               Logout
             </button>
           ) : (
             <Link
               href="/login"
-              className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600"
+              className="bg-[#0D6EFD] hover:bg-[#0B5ED7] text-white px-5 py-2 rounded-lg text-sm font-semibold transition shadow-sm"
             >
               Login
             </Link>
