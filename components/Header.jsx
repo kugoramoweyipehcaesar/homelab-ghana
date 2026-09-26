@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ShoppingCart, User, FlaskConical } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { getLocal } from "@/lib/utils";
 
 export default function Header() {
@@ -14,8 +14,7 @@ export default function Header() {
 
   useEffect(() => {
     const update = () => {
-      const cart = getLocal("cart", []);
-      setCartCount(cart.length);
+      setCartCount(getLocal("cart", []).length);
       setUser(getLocal("currentUser"));
       setIsAdmin(typeof window !== "undefined" && localStorage.getItem("isAdmin") === "true");
     };
@@ -37,15 +36,13 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <header className="bg-white sticky top-0 z-50 border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-[#0D6EFD] rounded-lg flex items-center justify-center shadow-sm">
-            <FlaskConical className="text-white" size={20} />
-          </div>
-          <div>
-            <span className="font-bold text-[#0A1931] text-lg leading-none">HomeLab GH</span>
-            <p className="text-[10px] text-gray-400 font-medium tracking-wide">HOME • SAMPLE • RESULT</p>
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <img src="/logo-icon.svg" alt="HomeLab GH" className="w-9 h-9" />
+          <div className="leading-none">
+            <span className="font-extrabold text-[#0A1931] text-lg">HomeLab <span className="text-[#0D6EFD]">GH</span></span>
+            <p className="text-[9px] text-[#0D6EFD] font-medium tracking-[1.5px] mt-0.5">HOME · SAMPLE · RESULT</p>
           </div>
         </Link>
 
@@ -62,27 +59,21 @@ export default function Header() {
           <Link href="/tests" className="relative p-2 rounded-full hover:bg-gray-50 transition">
             <ShoppingCart size={20} className="text-gray-600" />
             {cartCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-[#0D6EFD] text-white text-[10px] font-bold w-4.5 h-4.5 min-w-[18px] rounded-full flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 bg-[#0D6EFD] text-white text-[10px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center">
                 {cartCount}
               </span>
             )}
           </Link>
 
           {user ? (
-            <button
-              onClick={logout}
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-[#0D6EFD] transition"
-            >
-              <div className="w-8 h-8 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#0D6EFD] font-bold text-sm">
+            <button onClick={logout} className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-[#0D6EFD]">
+              <div className="w-8 h-8 bg-[#E8F0FE] rounded-full flex items-center justify-center text-[#0D6EFD] font-bold text-sm border border-blue-100">
                 {user.fullName?.[0] || "U"}
               </div>
-              Logout
+              <span className="hidden sm:inline">Logout</span>
             </button>
           ) : (
-            <Link
-              href="/login"
-              className="bg-[#0D6EFD] hover:bg-[#0B5ED7] text-white px-5 py-2 rounded-lg text-sm font-semibold transition shadow-sm"
-            >
+            <Link href="/login" className="bg-[#0D6EFD] hover:bg-[#0B5ED7] text-white px-5 py-2 rounded-lg text-sm font-semibold transition shadow-sm">
               Login
             </Link>
           )}
